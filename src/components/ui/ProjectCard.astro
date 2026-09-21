@@ -21,7 +21,7 @@ const { project, featured = false } = Astro.props;
   <div class="flex flex-1 flex-col gap-4">
     <div class="flex items-center justify-between gap-4">
       <span
-        class="inline-flex items-center gap-2 rounded-[var(--radius-pill)] px-2.5 py-1 font-mono text-[0.68rem] font-semibold"
+        class="inline-flex items-center gap-2 rounded-[var(--radius-pill)] px-2.5 py-1 font-mono text-micro font-semibold"
         style={`color:${project.languageColor};background:color-mix(in oklab, ${project.languageColor} 14%, transparent)`}
       >
         <span
@@ -30,7 +30,7 @@ const { project, featured = false } = Astro.props;
         {project.language}
       </span>
 
-      <span class="font-mono text-[0.68rem] text-fg-faint">{project.year}</span>
+      <span class="font-mono text-micro text-fg-subtle">{project.year}</span>
     </div>
 
     <div class="flex flex-col gap-2">
@@ -47,7 +47,7 @@ const { project, featured = false } = Astro.props;
     <ul class="mt-auto flex flex-wrap gap-2 pt-2">
       {
         project.tags.map((tag) => (
-          <li class="rounded-[var(--radius-pill)] border border-hairline px-2.5 py-1 font-mono text-[0.65rem] text-fg-subtle">
+          <li class="rounded-[var(--radius-pill)] border border-hairline px-2.5 py-1 font-mono text-micro text-fg-subtle">
             {tag}
           </li>
         ))

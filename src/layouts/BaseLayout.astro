@@ -31,7 +31,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content={site.name} />
-    <meta name="theme-color" content="#050506" />
+    <meta name="theme-color" content="#0c1e15" />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
@@ -71,12 +71,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <Footer />
 
     <script>
-      import { initReveal, splitHeadings } from "~/scripts/reveal";
+      import { initReveal, splitHeadings, watchGradients } from "~/scripts/reveal";
       import { initSpotlight, initMagnetic } from "~/scripts/pointer-fx";
 
       // El orden importa: primero partimos los titulares en palabras,
       // después montamos el observer que dispara el revelado.
       splitHeadings();
+      watchGradients();
       initReveal();
       initSpotlight();
       initMagnetic();

@@ -33,7 +33,7 @@ import { site } from "~/data/site";
                 data-nav-link
                 class="nav-link relative flex items-center gap-1.5 rounded-[var(--radius-pill)] px-3.5 py-2 font-mono text-xs lowercase tracking-wide text-fg-subtle no-underline transition-colors duration-300"
               >
-                <span class="nav-link__index text-[0.62rem] text-fg-faint transition-colors duration-300">
+                <span class="nav-link__index text-micro text-fg-faint transition-colors duration-300">
                   {item.index}
                 </span>
                 {item.label}
@@ -61,7 +61,7 @@ import { site } from "~/data/site";
   <div
     id="scroll-progress"
     aria-hidden="true"
-    class="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-linear-to-r from-accent-500 via-cyan-glow to-violet-glow"
+    class="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-linear-to-r from-accent-500 via-glow-cyan to-glow-violet"
   >
   </div>
 </header>
@@ -69,7 +69,7 @@ import { site } from "~/data/site";
 <div
   id="mobile-menu"
   data-open="false"
-  class="mobile-menu fixed inset-0 z-40 grid place-items-center bg-[rgb(5_5_6/0.97)] backdrop-blur-2xl md:hidden"
+  class="mobile-menu fixed inset-0 z-40 grid place-items-center bg-[color-mix(in_oklab,var(--color-ink-950)_97%,transparent)] backdrop-blur-2xl md:hidden"
 >
   <nav aria-label="Principal móvil">
     <ul class="flex flex-col items-center gap-1">
@@ -110,7 +110,7 @@ import { site } from "~/data/site";
 <style>
   /* El header solo gana fondo cuando hay contenido detrás que separar. */
   .site-header[data-scrolled="true"] {
-    background-color: rgb(5 5 6 / 0.72);
+    background-color: color-mix(in oklab, var(--color-ink-950) 72%, transparent);
     backdrop-filter: blur(20px) saturate(140%);
     border-bottom-color: var(--color-hairline);
   }

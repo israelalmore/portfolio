@@ -78,5 +78,60 @@ export function splitHeadings(): void {
 
     el.replaceChildren(fragment);
     el.dataset.splitDone = "true";
+
+    // El degradado pasa de estar en este elemento a estar en cada palabra:
+    // background-clip:text no cruza la frontera de un inline-block.
+    if (el.classList.contains("text-gradient")) {
+      el.classList.remove("text-gradient");
+      el.classList.add("split-gradient");
+    }
   });
+
+  paintGradients();
+}
+
+/**
+ * Recalcula el degradado de los titulares partidos.
+ *
+ * Cada palabra lleva el degradado de la línea completa, desplazado hasta
+ * su posición: --grad-w es el ancho de la línea y --grad-x cuánto hay que
+ * correr el fondo hacia la izquierda. Sumadas, las N palabras reconstruyen
+ * un degradado continuo. Hay que rehacerlo cuando cambia el ancho, porque
+ * el titular es fluido (clamp) y las palabras se recolocan.
+ */
+export function paintGradients(): void {
+  document
+    .querySelectorAll<HTMLElement>(".split-gradient")
+    .forEach((el) => {
+      const base = el.getBoundingClientRect();
+      if (base.width === 0) return;
+      el.querySelectorAll<HTMLElement>(".split-word").forEach((mask) => {
+        const rect = mask.getBoundingClientRect();
+        mask.style.setProperty("--grad-w", `${base.width}px`);
+        mask.style.setProperty("--grad-x", `${base.left - rect.left}px`);
+      });
+    });
+}
+
+/**
+ * Las medidas anteriores dependen de la métrica real de la fuente, así que
+ * hay que repetirlas cuando termina de cargar y en cada cambio de ancho.
+ */
+export function watchGradients(): void {
+  document.fonts?.ready.then(paintGradients);
+
+  let raf = 0;
+  let lastWidth = window.innerWidth;
+  window.addEventListener(
+    "resize",
+    () => {
+      // Solo el ancho importa: en móvil, la barra de direcciones al
+      // aparecer y desaparecer dispara resize por alto sin recolocar nada.
+      if (window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(paintGradients);
+    },
+    { passive: true },
+  );
 }
