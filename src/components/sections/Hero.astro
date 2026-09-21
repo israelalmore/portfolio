@@ -1,0 +1,90 @@
+---
+import Aurora from "~/components/ui/Aurora.astro";
+import Button from "~/components/ui/Button.astro";
+import Reveal from "~/components/ui/Reveal.astro";
+---
+
+<section
+  id="home"
+  class="relative flex min-h-svh flex-col justify-center overflow-hidden pt-[var(--nav-height)]"
+>
+  <Aurora />
+
+  <div class="container-page relative z-10">
+    <Reveal class="mb-6 inline-flex items-center gap-2.5 rounded-[var(--radius-pill)] border border-hairline bg-surface px-3.5 py-1.5" y="0.75rem">
+      <span class="relative flex size-1.5">
+        <span class="absolute inline-flex size-full animate-ping rounded-full bg-accent-500 opacity-75"></span>
+        <span class="relative inline-flex size-1.5 rounded-full bg-accent-500"></span>
+      </span>
+      <span class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-fg-muted">
+        Disponible para prácticas
+      </span>
+    </Reveal>
+
+    <Reveal as="p" delay={60} class="mb-4 font-mono text-sm tracking-[0.2em] text-accent-500" y="0.75rem">
+      // hola mundo — soy
+    </Reveal>
+
+    <h1 class="mb-6 font-display text-hero font-black">
+      <span data-reveal data-split data-split-stagger="0" class="block text-gradient" style="--reveal-delay:120ms;--reveal-y:0">
+        Israel
+      </span>
+      <span data-reveal data-split data-split-stagger="0" class="block text-accent-500" style="--reveal-delay:220ms;--reveal-y:0">
+        Alcántara
+      </span>
+    </h1>
+
+    <Reveal as="p" delay={340} class="mb-5 flex min-h-[1.6em] items-center font-mono text-lg text-fg-muted sm:text-xl" y="1rem">
+      <span id="typewriter" aria-live="polite"></span><span class="caret" aria-hidden="true">_</span>
+    </Reveal>
+
+    <Reveal as="p" delay={420} class="mb-10 max-w-lg text-base leading-relaxed text-fg-muted">
+      Estudiante de <strong class="font-semibold text-fg">DAW en Stucom Barcelona</strong>.
+      Construyo cosas que importan: interfaces rápidas, accesibles y con carácter.
+      26 repos y sumando. ☕
+    </Reveal>
+
+    <Reveal delay={500} class="flex flex-wrap items-center gap-3">
+      <Button href="#projects" icon="lucide:code-xml" iconEnd="lucide:arrow-right">
+        Ver proyectos
+      </Button>
+      <Button href="#contact" variant="ghost" icon="lucide:mail">
+        Hablemos
+      </Button>
+    </Reveal>
+  </div>
+
+  <!-- Indicador de scroll -->
+  <div
+    class="container-page absolute inset-x-0 bottom-8 z-10 hidden items-center gap-3 sm:flex"
+    aria-hidden="true"
+  >
+    <span class="scroll-track relative h-14 w-px overflow-hidden bg-hairline-strong">
+      <span class="scroll-thumb absolute inset-x-0 top-0 h-1/3 bg-accent-500"></span>
+    </span>
+    <span class="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-fg-faint">
+      scroll
+    </span>
+  </div>
+</section>
+
+<script>
+  import { initTypewriter } from "~/scripts/typewriter";
+  import { heroPhrases } from "~/data/stats";
+
+  initTypewriter(document.getElementById("typewriter"), heroPhrases);
+</script>
+
+<style>
+  /* La marca de scroll recorre el raíl en bucle: invita a bajar
+     sin gritarlo. */
+  .scroll-thumb {
+    animation: scroll-hint 2.4s var(--ease-out-quint) infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-thumb {
+      animation: none;
+    }
+  }
+</style>

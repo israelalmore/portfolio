@@ -1,0 +1,45 @@
+---
+import ProjectCard from "~/components/ui/ProjectCard.astro";
+import Reveal from "~/components/ui/Reveal.astro";
+import SectionHeader from "~/components/ui/SectionHeader.astro";
+import Button from "~/components/ui/Button.astro";
+import { projects } from "~/data/projects";
+import { socials } from "~/data/site";
+
+const github = socials.find((social) => social.label === "GitHub");
+---
+
+<section id="projects" class="relative py-section">
+  <div class="container-page">
+    <SectionHeader
+      index="03"
+      eyebrow="proyectos"
+      title="Trabajo seleccionado,"
+      subtitle="no todo lo que existe."
+    />
+
+    <div class="mt-16 grid gap-5 lg:grid-cols-2">
+      {
+        projects.map((project, index) => (
+          <Reveal
+            delay={index * 110}
+            y="2.5rem"
+            class:list={["h-full", project.featured && "lg:col-span-2"]}
+          >
+            <ProjectCard project={project} featured={project.featured} />
+          </Reveal>
+        ))
+      }
+    </div>
+
+    {
+      github && (
+        <Reveal delay={120} class="mt-12 flex justify-center">
+          <Button href={github.href} variant="ghost" external icon="lucide:github" iconEnd="lucide:arrow-up-right">
+            Todo en GitHub
+          </Button>
+        </Reveal>
+      )
+    }
+  </div>
+</section>

@@ -1,0 +1,194 @@
+---
+import { Icon } from "astro-icon/components";
+import { navItems } from "~/data/navigation";
+import { site } from "~/data/site";
+---
+
+<header
+  id="site-header"
+  data-scrolled="false"
+  class="site-header fixed inset-x-0 top-0 z-50 border-b border-transparent transition-[background-color,border-color,backdrop-filter] duration-500 ease-[var(--ease-out-quint)]"
+>
+  <div
+    class="container-page flex items-center justify-between"
+    style="height:var(--nav-height)"
+  >
+    <a
+      href="#home"
+      class="logo font-mono text-base font-bold tracking-tight text-fg no-underline"
+      aria-label={`${site.name} — inicio`}
+    >
+      <span class="text-accent-500">&lt;</span><span class="logo__name"
+        >israel</span
+      ><span class="text-accent-500">/&gt;</span>
+    </a>
+
+    <nav aria-label="Principal" class="hidden md:block">
+      <ul class="flex items-center gap-1">
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={`#${item.id}`}
+                data-nav-link
+                class="nav-link relative flex items-center gap-1.5 rounded-[var(--radius-pill)] px-3.5 py-2 font-mono text-xs lowercase tracking-wide text-fg-subtle no-underline transition-colors duration-300"
+              >
+                <span class="nav-link__index text-[0.62rem] text-fg-faint transition-colors duration-300">
+                  {item.index}
+                </span>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <button
+      id="menu-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Abrir menú de navegación"
+      class="menu-toggle relative grid size-10 place-items-center rounded-full border border-hairline text-fg transition-colors duration-300 md:hidden"
+    >
+      <span class="icon-open grid"><Icon name="lucide:menu" class="size-5" /></span>
+      <span class="icon-close grid"><Icon name="lucide:x" class="size-5" /></span>
+    </button>
+  </div>
+
+  <!-- Barra de progreso de lectura -->
+  <div
+    id="scroll-progress"
+    aria-hidden="true"
+    class="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-linear-to-r from-accent-500 via-cyan-glow to-violet-glow"
+  >
+  </div>
+</header>
+
+<div
+  id="mobile-menu"
+  data-open="false"
+  class="mobile-menu fixed inset-0 z-40 grid place-items-center bg-[rgb(5_5_6/0.97)] backdrop-blur-2xl md:hidden"
+>
+  <nav aria-label="Principal móvil">
+    <ul class="flex flex-col items-center gap-1">
+      {
+        navItems.map((item, index) => (
+          <li class="mobile-menu__item" style={`--item-delay:${140 + index * 70}ms`}>
+            <a
+              href={`#${item.id}`}
+              class="mobile-link flex items-baseline gap-3 px-6 py-3 font-display text-3xl font-bold lowercase text-fg no-underline transition-colors duration-300"
+            >
+              <span class="font-mono text-xs text-accent-700">{item.index}</span>
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</div>
+
+<script>
+  import {
+    initScrollProgress,
+    initHeaderState,
+    initScrollSpy,
+    initMobileMenu,
+  } from "~/scripts/nav";
+
+  initScrollProgress(document.getElementById("scroll-progress"));
+  initHeaderState(document.getElementById("site-header"));
+  initScrollSpy();
+  initMobileMenu(
+    document.getElementById("menu-toggle"),
+    document.getElementById("mobile-menu"),
+  );
+</script>
+
+<style>
+  /* El header solo gana fondo cuando hay contenido detrás que separar. */
+  .site-header[data-scrolled="true"] {
+    background-color: rgb(5 5 6 / 0.72);
+    backdrop-filter: blur(20px) saturate(140%);
+    border-bottom-color: var(--color-hairline);
+  }
+
+  .logo__name {
+    transition: color 0.3s var(--ease-out-quint);
+  }
+  .logo:hover .logo__name {
+    color: var(--color-accent-500);
+  }
+
+  .nav-link:hover {
+    color: var(--color-fg);
+  }
+  .nav-link:hover .nav-link__index {
+    color: var(--color-accent-700);
+  }
+  .nav-link[aria-current] {
+    color: var(--color-accent-500);
+  }
+
+  /* Subrayado que crece desde el centro */
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0.875rem;
+    bottom: 0.3rem;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.4s var(--ease-out-quint);
+  }
+  .nav-link:hover::after,
+  .nav-link[aria-current]::after {
+    transform: scaleX(1);
+  }
+
+  .menu-toggle:hover {
+    border-color: var(--color-accent-500);
+    color: var(--color-accent-500);
+  }
+  .menu-toggle .icon-close {
+    display: none;
+  }
+  .menu-toggle[aria-expanded="true"] .icon-open {
+    display: none;
+  }
+  .menu-toggle[aria-expanded="true"] .icon-close {
+    display: block;
+  }
+
+  .mobile-menu {
+    transform: translateY(-100%);
+    visibility: hidden;
+    transition:
+      transform 0.6s var(--ease-out-expo),
+      visibility 0.6s;
+  }
+  .mobile-menu[data-open="true"] {
+    transform: translateY(0);
+    visibility: visible;
+  }
+
+  /* Los enlaces entran escalonados una vez abierto el panel */
+  .mobile-menu__item {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition:
+      opacity 0.5s var(--ease-out-expo) var(--item-delay),
+      transform 0.5s var(--ease-out-expo) var(--item-delay);
+  }
+  .mobile-menu[data-open="true"] .mobile-menu__item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .mobile-link:hover {
+    color: var(--color-accent-500);
+  }
+</style>

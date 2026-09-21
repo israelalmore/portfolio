@@ -1,0 +1,100 @@
+---
+import { Icon } from "astro-icon/components";
+import type { Project } from "~/data/projects";
+
+interface Props {
+  project: Project;
+  /** Las destacadas ocupan dos columnas: jerarquía visual real. */
+  featured?: boolean;
+}
+
+const { project, featured = false } = Astro.props;
+---
+
+<article
+  class:list={[
+    "project-card spotlight relative flex h-full flex-col gap-4 rounded-[var(--radius-card)] border border-hairline bg-surface p-7 transition-[transform,background-color,border-color] duration-500 ease-[var(--ease-out-quint)]",
+    featured && "lg:flex-row lg:items-center lg:gap-10 lg:p-9",
+  ]}
+  style={`--spotlight-color:${project.languageColor}`}
+>
+  <div class="flex flex-1 flex-col gap-4">
+    <div class="flex items-center justify-between gap-4">
+      <span
+        class="inline-flex items-center gap-2 rounded-[var(--radius-pill)] px-2.5 py-1 font-mono text-[0.68rem] font-semibold"
+        style={`color:${project.languageColor};background:color-mix(in oklab, ${project.languageColor} 14%, transparent)`}
+      >
+        <span
+          class="size-1.5 rounded-full"
+          style={`background:${project.languageColor}`}></span>
+        {project.language}
+      </span>
+
+      <span class="font-mono text-[0.68rem] text-fg-faint">{project.year}</span>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <h3 class="font-mono text-xl font-bold tracking-tight text-fg">
+        {project.name}
+      </h3>
+      <p class="text-sm font-medium text-accent-500">{project.tagline}</p>
+    </div>
+
+    <p class="max-w-prose text-sm leading-relaxed text-fg-muted">
+      {project.description}
+    </p>
+
+    <ul class="mt-auto flex flex-wrap gap-2 pt-2">
+      {
+        project.tags.map((tag) => (
+          <li class="rounded-[var(--radius-pill)] border border-hairline px-2.5 py-1 font-mono text-[0.65rem] text-fg-subtle">
+            {tag}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="flex items-center gap-4 pt-2 lg:pt-0">
+    <a
+      href={project.repo}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="card-link inline-flex items-center gap-2 font-mono text-xs text-fg-subtle no-underline transition-colors duration-300"
+    >
+      <!-- Enlace envolvente: toda la tarjeta es clicable, pero el
+           nombre accesible sigue siendo el de este enlace. -->
+      <span class="absolute inset-0 rounded-[inherit]" aria-hidden="true"></span>
+      ver repo
+      <span class="card-arrow grid">
+        <Icon name="lucide:arrow-up-right" class="size-4" />
+      </span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .project-card:hover {
+    transform: translateY(-4px);
+    background: var(--color-surface-hover);
+    border-color: var(--color-hairline-strong);
+  }
+
+  .project-card:hover .card-link {
+    color: var(--color-fg);
+  }
+
+  .card-arrow {
+    transition: transform 0.4s var(--ease-spring);
+  }
+
+  .project-card:hover .card-arrow {
+    transform: translate(3px, -3px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-card:hover {
+      transform: none;
+    }
+  }
+</style>

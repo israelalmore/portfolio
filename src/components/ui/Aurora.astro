@@ -1,0 +1,61 @@
+---
+/**
+ * Fondo aurora.
+ *
+ * Tres manchas de color desenfocadas que derivan lentamente. Solo
+ * animamos `transform` (compositor puro), nunca top/left, que
+ * forzarían layout 60 veces por segundo.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+
+const blobs = [
+  {
+    color: "var(--color-accent-500)",
+    size: "min(46rem, 90vw)",
+    position: "top:-12%;right:-8%",
+    opacity: 0.1,
+    duration: "19s",
+    delay: "0s",
+  },
+  {
+    color: "var(--color-violet-glow)",
+    size: "min(34rem, 75vw)",
+    position: "bottom:-6%;left:-6%",
+    opacity: 0.13,
+    duration: "24s",
+    delay: "-6s",
+  },
+  {
+    color: "var(--color-cyan-glow)",
+    size: "min(24rem, 60vw)",
+    position: "top:42%;left:38%",
+    opacity: 0.08,
+    duration: "31s",
+    delay: "-13s",
+  },
+];
+---
+
+<div
+  class:list={["pointer-events-none absolute inset-0 overflow-hidden", className]}
+  aria-hidden="true"
+>
+  {
+    blobs.map((blob) => (
+      <div
+        class="aurora-blob"
+        style={`${blob.position};width:${blob.size};height:${blob.size};opacity:${blob.opacity};background:radial-gradient(circle,${blob.color} 0%,transparent 68%);--blob-duration:${blob.duration};--blob-delay:${blob.delay}`}
+      />
+    ))
+  }
+
+  {/* Rejilla técnica: da escala y profundidad sin robar protagonismo */}
+  <div
+    class="absolute inset-0 opacity-[0.55]"
+    style="background-image:linear-gradient(var(--color-hairline) 1px,transparent 1px),linear-gradient(90deg,var(--color-hairline) 1px,transparent 1px);background-size:5rem 5rem;mask-image:radial-gradient(ellipse 80% 55% at 50% 40%,#000 10%,transparent 75%)"
+  >
+  </div>
+</div>

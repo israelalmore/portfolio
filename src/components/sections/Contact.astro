@@ -1,0 +1,80 @@
+---
+import { Icon } from "astro-icon/components";
+import Aurora from "~/components/ui/Aurora.astro";
+import Reveal from "~/components/ui/Reveal.astro";
+import { socials } from "~/data/site";
+---
+
+<section
+  id="contact"
+  class="relative overflow-hidden border-t border-hairline py-section"
+>
+  <Aurora class="opacity-70" />
+
+  <div class="container-page relative z-10 flex flex-col items-center text-center">
+    <Reveal class="flex items-center gap-3 font-mono text-eyebrow uppercase" y="0.75rem">
+      <span class="text-accent-500">04</span>
+      <span class="h-px w-8 bg-hairline-strong"></span>
+      <span class="text-fg-subtle">contacto</span>
+    </Reveal>
+
+    <h2 class="mt-6 font-display text-display font-black">
+      <span data-reveal data-split class="block text-gradient" style="--reveal-delay:80ms;--reveal-y:0">
+        Construyamos
+      </span>
+      <span data-reveal data-split class="block text-accent-500" style="--reveal-delay:180ms;--reveal-y:0">
+        algo juntos.
+      </span>
+    </h2>
+
+    <Reveal as="p" delay={280} class="mt-6 max-w-md text-base leading-relaxed text-fg-muted">
+      ¿Tenés un proyecto en mente, una oferta de prácticas o simplemente ganas
+      de hablar de código? Escribime — respondo siempre.
+    </Reveal>
+
+    <ul class="mt-12 grid w-full max-w-2xl gap-3 sm:grid-cols-3">
+      {
+        socials.map((social, index) => (
+          <Reveal as="li" delay={340 + index * 90} y="2rem">
+            <a
+              href={social.href}
+              target={social.href.startsWith("mailto:") ? undefined : "_blank"}
+              rel="noopener noreferrer"
+              class="contact-card spotlight flex h-full flex-col items-center gap-3 rounded-[var(--radius-card)] border border-hairline bg-surface px-5 py-7 no-underline transition-[transform,background-color,border-color] duration-500 ease-[var(--ease-out-quint)]"
+            >
+              <span class="contact-card__icon grid size-11 place-items-center rounded-full border border-hairline text-accent-500 transition-transform duration-500 ease-[var(--ease-spring)]">
+                <Icon name={social.icon} class="size-5" />
+              </span>
+              <span class="font-mono text-sm font-semibold text-fg">
+                {social.label}
+              </span>
+              <span class="break-all font-mono text-[0.7rem] text-fg-subtle">
+                {social.handle}
+              </span>
+            </a>
+          </Reveal>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .contact-card:hover {
+    transform: translateY(-4px);
+    background: var(--color-surface-hover);
+    border-color: var(--color-hairline-strong);
+  }
+
+  .contact-card:hover .contact-card__icon {
+    transform: scale(1.1) rotate(-6deg);
+    border-color: var(--color-accent-700);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-card:hover,
+    .contact-card:hover .contact-card__icon {
+      transform: none;
+    }
+  }
+</style>

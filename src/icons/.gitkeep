@@ -1,0 +1,5 @@
+# Directorio de iconos SVG locales que astro-icon escanea al arrancar.
+# Vacío a propósito: todos los iconos vienen de los sets de Iconify
+# (@iconify-json/devicon y @iconify-json/lucide), inlineados en build.
+# Si en algún momento añadís un SVG propio, va aquí y se usa como
+# <Icon name="mi-icono" />.

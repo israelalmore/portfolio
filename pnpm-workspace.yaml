@@ -1,0 +1,5 @@
+# esbuild descarga su binario nativo en postinstall. pnpm 10 bloquea
+# los scripts de instalación por defecto; aquí lo autorizamos de forma
+# explícita para que el build funcione también en CI.
+allowBuilds:
+  esbuild: true

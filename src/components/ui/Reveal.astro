@@ -1,0 +1,41 @@
+---
+/**
+ * Envoltorio de scroll reveal.
+ *
+ * No trae JS propio: solo marca el elemento con [data-reveal] y expone
+ * las custom properties que consume la hoja global. Un único observer
+ * en BaseLayout se encarga de todos. Así es como se escala el motion
+ * sin repartir listeners por toda la página.
+ */
+interface Props {
+  as?: keyof HTMLElementTagNameMap;
+  /** Retardo en ms para escalonar grupos de elementos. */
+  delay?: number;
+  /** Desplazamiento vertical inicial. */
+  y?: string;
+  blur?: string;
+  scale?: number;
+  class?: string;
+}
+
+const {
+  as: Tag = "div",
+  delay = 0,
+  y = "1.75rem",
+  blur = "6px",
+  scale = 1,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const style = [
+  `--reveal-delay:${delay}ms`,
+  `--reveal-y:${y}`,
+  `--reveal-blur:${blur}`,
+  `--reveal-scale:${scale}`,
+].join(";");
+---
+
+<Tag data-reveal style={style} class:list={[className]} {...rest}>
+  <slot />
+</Tag>

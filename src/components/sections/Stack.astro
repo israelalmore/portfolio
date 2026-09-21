@@ -1,0 +1,90 @@
+---
+import { Icon } from "astro-icon/components";
+import Reveal from "~/components/ui/Reveal.astro";
+import SectionHeader from "~/components/ui/SectionHeader.astro";
+import { stack, stackByCategory } from "~/data/stack";
+
+// La pista del marquee se duplica: el keyframe desplaza exactamente
+// el 50%, así el salto del bucle es invisible.
+const marqueeTrack = [...stack, ...stack];
+---
+
+<section id="stack" class="relative overflow-hidden border-y border-hairline py-section">
+  <div class="container-page">
+    <SectionHeader
+      index="02"
+      eyebrow="stack"
+      title="Las herramientas,"
+      subtitle="no la identidad."
+    />
+
+    <Reveal as="p" delay={80} class="mt-6 max-w-xl text-base leading-relaxed text-fg-muted">
+      Un framework se aprende en una semana. Los fundamentos que hay debajo,
+      no. Esto es lo que uso hoy — y lo que uso mañana dependerá del problema.
+    </Reveal>
+  </div>
+
+  <!-- Banda en movimiento: energía visual sin robar atención -->
+  <div class="marquee my-14" aria-hidden="true">
+    <div class="marquee__track">
+      {
+        marqueeTrack.map((tech) => (
+          <span class="marquee__item">
+            <Icon name={tech.icon} class="size-5" />
+            {tech.label}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="container-page">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+      {
+        stackByCategory.map((group, groupIndex) => (
+          <Reveal as="div" delay={groupIndex * 90} class="flex flex-col gap-4">
+            <h3 class="flex items-center gap-2.5 font-mono text-[0.68rem] uppercase tracking-[0.2em] text-fg-subtle">
+              <span class="size-1 rounded-full bg-accent-500" />
+              {group.label}
+            </h3>
+
+            <ul class="flex flex-col gap-1.5">
+              {group.items.map((tech) => (
+                <li class="tech-row spotlight flex items-center gap-3 rounded-lg border border-transparent px-3 py-2.5 transition-colors duration-300">
+                  <Icon name={tech.icon} class="size-5 shrink-0" />
+                  <span class="text-sm text-fg-muted transition-colors duration-300">
+                    {tech.label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .marquee__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    white-space: nowrap;
+    padding: 0.65rem 1.25rem;
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-fg-muted);
+  }
+
+  .tech-row:hover {
+    background: var(--color-surface);
+    border-color: var(--color-hairline);
+  }
+  .tech-row:hover span {
+    color: var(--color-fg);
+  }
+</style>

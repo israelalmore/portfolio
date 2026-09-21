@@ -1,0 +1,108 @@
+---
+import "@fontsource-variable/inter/wght.css";
+import "@fontsource-variable/space-grotesk/wght.css";
+import "@fontsource-variable/jetbrains-mono/wght.css";
+import "~/styles/global.css";
+
+import Header from "~/components/layout/Header.astro";
+import Footer from "~/components/layout/Footer.astro";
+import Grain from "~/components/ui/Grain.astro";
+import { site } from "~/data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = site.title, description = site.description } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang={site.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}/favicon.svg`.replace(/\/{2,}/g, "/")} type="image/svg+xml" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    <meta name="theme-color" content="#050506" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={site.locale} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: site.name,
+        jobTitle: site.role,
+        email: `mailto:${site.email}`,
+        url: canonical.href,
+        address: { "@type": "PostalAddress", addressLocality: "Barcelona", addressCountry: "ES" },
+        sameAs: [
+          "https://github.com/israelalmore",
+          "https://linkedin.com/in/israel-alcantara-moreno",
+        ],
+      })}
+    />
+  </head>
+
+  <body class="antialiased">
+    <a href="#home" class="skip-link">Saltar al contenido</a>
+
+    <Grain />
+    <Header />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <script>
+      import { initReveal, splitHeadings } from "~/scripts/reveal";
+      import { initSpotlight, initMagnetic } from "~/scripts/pointer-fx";
+
+      // El orden importa: primero partimos los titulares en palabras,
+      // después montamos el observer que dispara el revelado.
+      splitHeadings();
+      initReveal();
+      initSpotlight();
+      initMagnetic();
+    </script>
+
+    <style>
+      .skip-link {
+        position: fixed;
+        top: 0.75rem;
+        left: 0.75rem;
+        z-index: 100;
+        transform: translateY(-200%);
+        padding: 0.65rem 1.1rem;
+        border-radius: var(--radius-pill);
+        background: var(--color-accent-500);
+        color: var(--color-ink-950);
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: transform 0.3s var(--ease-out-quint);
+      }
+
+      .skip-link:focus-visible {
+        transform: translateY(0);
+      }
+    </style>
+  </body>
+</html>

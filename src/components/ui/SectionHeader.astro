@@ -1,0 +1,50 @@
+---
+import Reveal from "./Reveal.astro";
+
+interface Props {
+  index: string;
+  eyebrow: string;
+  title: string;
+  /** Segunda línea del titular, en tono apagado — crea jerarquía. */
+  subtitle?: string;
+  align?: "start" | "center";
+  class?: string;
+}
+
+const {
+  index,
+  eyebrow,
+  title,
+  subtitle,
+  align = "start",
+  class: className,
+} = Astro.props;
+---
+
+<header
+  class:list={[
+    "flex flex-col gap-5",
+    align === "center" ? "items-center text-center" : "items-start",
+    className,
+  ]}
+>
+  <Reveal class="flex items-center gap-3 font-mono text-eyebrow uppercase" y="0.75rem">
+    <span class="text-accent-500">{index}</span>
+    <span class="h-px w-8 bg-hairline-strong"></span>
+    <span class="text-fg-subtle">{eyebrow}</span>
+  </Reveal>
+
+  <Reveal as="h2" delay={90} class="max-w-4xl font-display text-display font-bold">
+    <span data-split data-split-stagger="45" class="text-gradient">{title}</span>
+    {
+      subtitle && (
+        <>
+          <br />
+          <span data-split data-split-stagger="45" class="text-fg-faint">
+            {subtitle}
+          </span>
+        </>
+      )
+    }
+  </Reveal>
+</header>

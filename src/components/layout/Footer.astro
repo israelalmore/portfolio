@@ -1,0 +1,52 @@
+---
+import { Icon } from "astro-icon/components";
+import { site, socials } from "~/data/site";
+---
+
+<footer class="border-t border-hairline">
+  <div
+    class="container-page flex flex-col gap-6 py-10 sm:flex-row sm:items-center sm:justify-between"
+  >
+    <p class="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-fg-faint">
+      {site.name} · {site.year} · {site.location}
+    </p>
+
+    <ul class="flex items-center gap-1">
+      {
+        socials.map((social) => (
+          <li>
+            <a
+              href={social.href}
+              target={social.href.startsWith("mailto:") ? undefined : "_blank"}
+              rel="noopener noreferrer"
+              aria-label={social.label}
+              class="social-link grid size-10 place-items-center rounded-full border border-hairline text-fg-subtle transition-colors duration-300"
+            >
+              <Icon name={social.icon} class="size-4" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <p
+    class="container-page pb-8 font-mono text-[0.65rem] text-fg-faint/70"
+  >
+    Hecho con Astro · 0&nbsp;KB de JavaScript de framework
+  </p>
+</footer>
+
+<style>
+  .social-link:hover {
+    color: var(--color-accent-500);
+    border-color: var(--color-accent-500);
+    transform: translateY(-2px);
+  }
+  .social-link {
+    transition:
+      color 0.3s var(--ease-out-quint),
+      border-color 0.3s var(--ease-out-quint),
+      transform 0.3s var(--ease-spring);
+  }
+</style>

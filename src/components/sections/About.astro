@@ -1,0 +1,87 @@
+---
+import { Icon } from "astro-icon/components";
+import Reveal from "~/components/ui/Reveal.astro";
+import SectionHeader from "~/components/ui/SectionHeader.astro";
+import { stats } from "~/data/stats";
+import { site } from "~/data/site";
+---
+
+<section id="about" class="relative py-section">
+  <div class="container-page">
+    <SectionHeader
+      index="01"
+      eyebrow="sobre mí"
+      title="Construyo la web,"
+      subtitle="un commit cada vez."
+    />
+
+    <div class="mt-16 grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
+      <div class="flex flex-col gap-6">
+        <Reveal as="p" delay={60} class="text-lg leading-relaxed text-fg-muted">
+          19 años, Barcelona. Estudio <strong class="font-semibold text-fg"
+            >Desarrollo de Aplicaciones Web</strong
+          > en Stucom. Aprendo construyendo: rompo cosas, entiendo por qué se
+          rompieron y vuelvo a empezar.
+        </Reveal>
+
+        <Reveal as="p" delay={130} class="text-lg leading-relaxed text-fg-muted">
+          Competí en un <strong class="font-semibold text-fg">hackathon</strong> y
+          lo volvería a hacer. El objetivo no es aprender un framework: es
+          entender los fundamentos lo bastante bien como para elegir la
+          herramienta correcta cada vez.
+        </Reveal>
+
+        <Reveal
+          delay={200}
+          class="mt-2 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-xs text-fg-subtle"
+        >
+          <span class="inline-flex items-center gap-2">
+            <Icon name="lucide:map-pin" class="size-3.5 text-accent-500" />
+            {site.location}
+          </span>
+          <span class="inline-flex items-center gap-2">
+            <Icon name="lucide:git-branch" class="size-3.5 text-accent-500" />
+            {site.handle}
+          </span>
+          <span class="inline-flex items-center gap-2">
+            <Icon name="lucide:coffee" class="size-3.5 text-accent-500" />
+            siempre encendido
+          </span>
+        </Reveal>
+      </div>
+
+      <ul class="grid grid-cols-2 gap-3 self-start sm:gap-4">
+        {
+          stats.map((stat, index) => (
+            <Reveal
+              as="li"
+              delay={index * 90}
+              y="2rem"
+              scale={0.96}
+              class="spotlight relative overflow-hidden rounded-[var(--radius-card)] border border-hairline bg-surface p-6 text-center transition-colors duration-500 hover:bg-surface-hover"
+            >
+              <div class="font-display text-4xl font-black tracking-tight text-accent-500 sm:text-5xl">
+                {stat.value === null ? (
+                  stat.display
+                ) : (
+                  <>
+                    <span data-counter={stat.value}>{stat.display}</span>
+                    {stat.suffix}
+                  </>
+                )}
+              </div>
+              <div class="mt-2 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-fg-subtle">
+                {stat.label}
+              </div>
+            </Reveal>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initCounters } from "~/scripts/counter";
+  initCounters();
+</script>

@@ -1,16 +1,64 @@
-# React + Vite
+# Portfolio — Israel Alcántara
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Portfolio personal construido con **Astro 7**, **Tailwind CSS v4** y **pnpm**.
+Cero JavaScript de framework en cliente: todo el movimiento es CSS + un puñado
+de módulos de TypeScript vanilla.
 
-Currently, two official plugins are available:
+🔗 https://israelalmore.github.io/portfolio
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Arranque
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+pnpm install
+pnpm dev        # http://localhost:4321
+pnpm build      # astro check + astro build → dist/
+pnpm preview    # sirve dist/ localmente
+```
 
-## Expanding the ESLint configuration
+## Arquitectura
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+src/
+├── data/          Contenido como datos tipados — la única fuente de verdad
+├── components/
+│   ├── ui/        Piezas reutilizables (Button, Reveal, ProjectCard…)
+│   ├── layout/    Header, Footer
+│   └── sections/  Secciones de la página (Hero, About, Stack…)
+├── layouts/       BaseLayout: head, metadatos, SEO, JSON-LD
+├── scripts/       Módulos de animación en TS vanilla
+├── styles/        global.css — tokens de diseño en @theme
+└── pages/         index.astro
+```
+
+**La regla:** para cambiar un proyecto, una tecnología o un dato de contacto
+se edita un archivo de `src/data/`. Nunca el markup.
+
+## Sistema de diseño
+
+Todos los tokens viven en el bloque `@theme` de `src/styles/global.css`:
+color, escala tipográfica fluida, ritmo vertical, radios y curvas de easing.
+Si un valor no está ahí, no se usa en un componente. Cero magic numbers.
+
+## Animaciones
+
+| Efecto | Implementación |
+|---|---|
+| Scroll reveal escalonado | Un `IntersectionObserver` global + custom properties |
+| Titulares palabra a palabra | Split en cliente con máscaras CSS (HTML servido sin tocar → SEO intacto) |
+| Spotlight en tarjetas | Delegación de eventos + `requestAnimationFrame` |
+| Botones magnéticos | `transform` sobre el compositor, 6px máximo |
+| Marquee infinito | Pista duplicada + `translate3d(-50%)` |
+| Contadores | `requestAnimationFrame` con ease-out-expo |
+| Progreso de lectura | `scaleX`, nunca `width` |
+| Máquina de escribir | `setTimeout` recursivo, pausa con la pestaña oculta |
+
+Todo respeta `prefers-reduced-motion: reduce`. Con esa preferencia activa el
+sitio se muestra completo y estático — no se degrada, se adapta.
+
+## Despliegue
+
+Push a `main` → GitHub Actions construye con pnpm y publica en GitHub Pages.
+El `base: "/portfolio"` de `astro.config.mjs` debe coincidir con el nombre del
+repositorio.
